@@ -26,3 +26,6 @@ jobs:
           PASSWORD: ${{ secrets.PASSWORD }}
         run: |
           python3 clock-in.py ${ACCOUNT} ${PASSWORD}
+      - name: send failure notifications
+        if: ${{ failure() }}
+        run: curl https://open.feishu.cn/open-apis/bot/v2/hook/f6142327-070b-465c-8d6e-af517dfa5f31 -X POST -H "Content-Type: application/json" -d  '{"msg_type":"text","content":{"text":"打卡失败，请手动打卡并检查错误"}}'
